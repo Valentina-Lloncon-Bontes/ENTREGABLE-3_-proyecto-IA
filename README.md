@@ -72,3 +72,55 @@ Función encargada: call_ollama_deepseek()
 Se define a EduIA como mentor académico especializado en psicología educativa, coaching y vocación, restringido a solo usar el contenido documental.
 
 El prompt incluye: rol del sistema + contexto relevante (chunks) + pregunta del usuario.
+
+
+
+
+FLUJO DE AUTOMATIZACIÓN DEL SCRIPT.PY (DESCRIPCIÓN COMPLETA)
+A continuación, el flujo funcional automatizado del script script.py:
+
+less
+Copiar
+Editar
+[INICIO SCRIPT]
+        │
+        ▼
+[CARGA Y EXTRACCIÓN]
+→ Se define la carpeta de PDFs.
+→ Se recorre la carpeta y se extrae texto de cada PDF con PyPDF2.
+→ Si falla la extracción, el programa se detiene.
+
+        │
+        ▼
+[SEGMENTACIÓN EN CHUNKS]
+→ El texto completo se divide en fragmentos de 500 caracteres con solapamiento.
+
+        │
+        ▼
+[EMBEDDINGS]
+→ Se carga el modelo de SentenceTransformer.
+→ Se generan embeddings para cada fragmento.
+→ Se guarda el índice FAISS (`pdf_embeddings.faiss`) y los chunks (`text_chunks.json`).
+
+        │
+        ▼
+[SE INICIA EL CHATBOT]
+→ `chat_with_eduaia()` solicita input del usuario en consola.
+
+        │
+        ▼
+[RESPUESTA EN TIEMPO REAL]
+→ Para cada pregunta:
+    1. Se calcula su embedding.
+    2. Se buscan los 3 chunks más relevantes usando FAISS.
+    3. Se construye el prompt completo para el modelo LLM (EduIA).
+    4. Se hace una llamada POST a la API local de Ollama.
+    5. Se muestra la respuesta generada.
+
+        │
+        ▼
+[LOOP hasta que el usuario escribe 'salir']
+
+
+✅ CONCLUSIÓN
+El modelo funcional y definitivo elegido es un sistema conversacional basado en recuperación aumentada por IA (RAG). La elección se justifica por su equilibrio entre robustez técnica, personalización educativa, facilidad de uso y escalabilidad futura. El código script.py implementa correctamente esta arquitectura, con todos los componentes fundamentales documentados,
